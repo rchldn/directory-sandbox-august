@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,14 @@
     <script>
         async function submitForm(event) {
             event.preventDefault();
-            
+
             const formData = {
                 name: document.getElementById('name').value,
                 genre: document.getElementById('genre').value,
                 instrument: document.getElementById('instrument').value,
                 email: document.getElementById('email').value
             };
-            
+
             await fetch('/add-musician', {
                 method: 'POST',
                 headers: {
@@ -22,15 +23,11 @@
                 },
                 body: JSON.stringify(formData)
             });
-            
-            alert('Musician added!');
-        }
 
-        function downloadCSV() {
-            window.location.href = '/export-csv';
-        }
+            alert('Musician added!');
     </script>
 </head>
+
 <body>
     <h1>Musician Directory</h1>
     <form onsubmit="submitForm(event)">
@@ -48,7 +45,6 @@
         <br>
         <button type="submit">Add Musician</button>
     </form>
-    <br>
-    <button onclick="downloadCSV()">Download CSV Backup</button>
 </body>
+
 </html>

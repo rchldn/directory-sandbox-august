@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musician Directory Search</title>
+</head>
+
+<body>
+    <h1>Musician Directory</h1>
+
+    <!-- Search Form -->
+    <h2>Search for a Musician</h2>
+    <form onsubmit="searchMusician(event)">
+        <label for="search-genre">Genre:</label>
+        <input type="text" id="search-genre" required>
+        <br>
+        <label for="search-instrument">Instrument:</label>
+        <input type="text" id="search-instrument" required>
+        <br>
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="search-results"></div>
+
+    <script>
+        async function submitForm(event) {
+            event.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                genre: document.getElementById('genre').value,
+                instrument: document.getElementById('instrument').value,
+                email: document.getElementById('email').value
+            };
+
+            await fetch('/add-musician', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            alert('Musician added!');
+        }
+
+        async function searchMusician(event) {
+            event.preventDefault();
+
+            const genre = document.getElementById('search-genre').value;
+            const instrument = document.getElementById('search-instrument').value;
+
+            const response = await fetch(`/search?genre=${genre}&instrument=${instrument}`);
+            const results = await response.json();
+
+            const resultsDiv = document.getElementById('search-results');
+            resultsDiv.innerHTML = '';
+
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<p>No musicians found.</p>';
+            } else {
+                results.forEach(musician => {
+                    const musicianDiv = document.createElement('div');
+                    musicianDiv.innerHTML = `<p>Name: ${musician.name}, Genre: ${musician.genre}, Instrument: ${musician.instrument}, Email: ${musician.email}</p>`;
+                    resultsDiv.appendChild(musicianDiv);
+                });
+            }
+        }
+    </script>
+</body>
+
+
+
+
+
+
+
+</html>
